@@ -1,3 +1,136 @@
+/* Animated page fade-in */
+body {
+    animation: pageFadeIn 1.2s cubic-bezier(.4,0,.2,1);
+}
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 3D tilt and glow on card hover */
+.download-card {
+    transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s, background 0.25s;
+    will-change: transform, box-shadow;
+}
+.download-card.tilted {
+    box-shadow: 0 8px 32px 0 #dc3545cc, 0 1.5px 8px #0002;
+    background: rgba(220,53,69,0.07);
+}
+
+/* Glow effect on hover */
+.download-card:hover {
+    box-shadow: 0 0 0 4px #dc3545cc, 0 8px 32px 0 #dc3545cc, 0 1.5px 8px #0002;
+}
+
+/* Typewriter effect for headings */
+.typewriter {
+    overflow: hidden;
+    border-right: .15em solid #19c37d;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .08em;
+    animation: typing 2.2s steps(30, end), blink-caret .75s step-end infinite;
+}
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #19c37d; }
+}
+
+/* Toast notification */
+.toast {
+    position: fixed;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    background: #232526;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 0.7rem;
+    box-shadow: 0 2px 16px #0006;
+    font-weight: 600;
+    font-size: 1.1rem;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transition: opacity 0.4s;
+}
+.toast.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Dark/Light mode toggle */
+.theme-toggle {
+    position: fixed;
+    top: 1.2rem;
+    left: 1.2rem;
+    z-index: 10000;
+    background: #232526;
+    color: #fff;
+    border: 2px solid #19c37d;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #0003;
+    transition: background 0.2s, color 0.2s;
+}
+.light-mode {
+    background: #fff !important;
+    color: #232526 !important;
+}
+.light-mode .download-card {
+    background: #f8f9fa !important;
+    color: #232526 !important;
+}
+.light-mode .dev-stamp {
+    background: rgba(220,53,69,0.95) !important;
+    color: #fff !important;
+}
+
+/* Animated background particles */
+#bg-particles {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Reveal animation for cards */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Custom cursor */
+#custom-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 24px; height: 24px;
+    border: 2.5px solid #19c37d;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100000;
+    background: rgba(25,195,125,0.08);
+    transition: border-color 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+}
+.light-mode #custom-cursor {
+    border-color: #dc3545;
+    background: rgba(220,53,69,0.08);
+}
 /* Construction tape banner for cards */
 
 /* Under Development stamp for cards */
