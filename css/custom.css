@@ -1,0 +1,23 @@
+body {
+    background: #181c20;
+    color: #fff;
+}
+.navbar {
+    background: #23272f !important;
+}
+.navbar-brand, .nav-link, .navbar-text {
+    color: #fff !important;
+}
+.card {
+    background: #23272f;
+    color: #fff;
+    border: none;
+}
+.card-title {
+    color: #3b82f6;
+}
+.footer {
+    color: #cbd5e1;
+    padding: 2em 0 1em 0;
+    font-size: 0.95em;
+}
