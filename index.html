@@ -1,0 +1,146 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Downloads</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/custom.css" rel="stylesheet">
+</head>
+<body>
+	<div class="w-100 d-flex align-items-center justify-content-between px-4 py-3" style="background:rgba(0,0,0,0.25);">
+		<span style="font-size:1.5rem; font-weight:700; letter-spacing:2px; color:#19c37d; text-shadow:0 2px 8px #000;">arch000.xyz</span>
+		<nav>
+			<a href="/" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Home</a>
+			<a href="scripts/" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Scripts</a>
+			<a href="#" id="contact-nav" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Contact</a>
+		</nav>
+	</div>
+	<div class="container py-5 d-flex flex-column align-items-center justify-content-center min-vh-100">
+	<h1 class="mb-5 text-center">Featured Scripts</h1>
+		<div class="row g-4 w-100 justify-content-center">
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card download-card p-4 text-center position-relative">
+					<div class="dev-stamp">Under Development</div>
+					<h5 class="mb-3">Helix Perk Cards</h5>
+					<a href="#" class="download-link dev-popup" data-script="Helix Perk Cards">Download Helix Perk Cards</a>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card download-card p-4 text-center position-relative">
+					<div class="dev-stamp">Under Development</div>
+					<h5 class="mb-3">Arch's Liro Modules</h5>
+					<a href="#" class="download-link dev-popup" data-script="Arch's Liro Modules">Download Arch's Liro Modules</a>
+				</div>
+			</div>
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card download-card p-4 text-center position-relative">
+					<div class="dev-stamp">Under Development</div>
+					<h5 class="mb-3">ArchFramework</h5>
+					<a href="#" class="download-link dev-popup" data-script="ArchFramework">Download ArchFramework</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+	// Under Development popup for all download links
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelectorAll('.dev-popup').forEach(function(link) {
+			link.addEventListener('click', function(e) {
+				e.preventDefault();
+				var scriptName = link.getAttribute('data-script') || 'This script';
+				// Create overlay
+				var overlay = document.createElement('div');
+				overlay.style.position = 'fixed';
+				overlay.style.top = 0;
+				overlay.style.left = 0;
+				overlay.style.width = '100vw';
+				overlay.style.height = '100vh';
+				overlay.style.background = 'rgba(0,0,0,0.6)';
+				overlay.style.display = 'flex';
+				overlay.style.alignItems = 'center';
+				overlay.style.justifyContent = 'center';
+				overlay.style.zIndex = 9999;
+
+				// Create popup
+				var popup = document.createElement('div');
+				popup.style.background = '#232526';
+				popup.style.border = '3px solid #19c37d';
+				popup.style.borderRadius = '1.2rem';
+				popup.style.padding = '2.5rem 2rem 2rem 2rem';
+				popup.style.boxShadow = '0 8px 32px rgba(25,195,125,0.18)';
+				popup.style.color = '#f8f9fa';
+				popup.style.textAlign = 'center';
+				popup.style.maxWidth = '90vw';
+				popup.style.minWidth = '320px';
+				popup.style.position = 'relative';
+
+				popup.innerHTML = `
+					<h3 style="color:#19c37d; font-weight:700;">Under Development</h3>
+					<p style="margin:1rem 0 2rem 0;">${scriptName} is currently under development and not available for download yet.</p>
+					<button id="close-dev-popup" style="margin-top:1.5rem; background:#19c37d; border:none; color:#232526; font-size:1.1rem; font-weight:600; padding:0.6rem 2.2rem; border-radius:0.7rem; cursor:pointer;">Close</button>
+				`;
+
+				overlay.appendChild(popup);
+				document.body.appendChild(overlay);
+
+				document.getElementById('close-dev-popup').onclick = function() {
+					document.body.removeChild(overlay);
+				};
+			});
+		});
+	});
+	// Contact popout menu for Discord
+	document.addEventListener('DOMContentLoaded', function() {
+		var contactNav = document.getElementById('contact-nav');
+		if (contactNav) {
+			contactNav.addEventListener('click', function(e) {
+				e.preventDefault();
+				// Create overlay
+				var overlay = document.createElement('div');
+				overlay.style.position = 'fixed';
+				overlay.style.top = 0;
+				overlay.style.left = 0;
+				overlay.style.width = '100vw';
+				overlay.style.height = '100vh';
+				overlay.style.background = 'rgba(0,0,0,0.6)';
+				overlay.style.display = 'flex';
+				overlay.style.alignItems = 'center';
+				overlay.style.justifyContent = 'center';
+				overlay.style.zIndex = 9999;
+
+				// Create popup
+				var popup = document.createElement('div');
+				popup.style.background = '#232526';
+				popup.style.border = '3px solid #19c37d';
+				popup.style.borderRadius = '1.2rem';
+				popup.style.padding = '2.5rem 2rem 2rem 2rem';
+				popup.style.boxShadow = '0 8px 32px rgba(25,195,125,0.18)';
+				popup.style.color = '#f8f9fa';
+				popup.style.textAlign = 'center';
+				popup.style.maxWidth = '90vw';
+				popup.style.minWidth = '320px';
+				popup.style.position = 'relative';
+
+				popup.innerHTML = `
+					<h3 style="color:#19c37d; font-weight:700;">Contact</h3>
+					<p style="margin:1rem 0 2rem 0;">Add me on Discord:<br><span style="font-size:1.2rem; font-weight:600; color:#19c37d;">arch000</span></p>
+					<a href="https://discord.com/users/arch000" target="_blank" rel="noopener" style="background:#19c37d; color:#232526; font-weight:600; padding:0.7rem 2.2rem; border-radius:0.7rem; text-decoration:none; font-size:1.1rem; box-shadow:0 2px 8px #0002; transition:background 0.15s;">Open Discord</a>
+					<br><button id="close-contact-popup" style="margin-top:1.5rem; background:none; border:none; color:#aaa; font-size:1.1rem; cursor:pointer;">Close</button>
+				`;
+
+				overlay.appendChild(popup);
+				document.body.appendChild(overlay);
+
+				document.getElementById('close-contact-popup').onclick = function() {
+					document.body.removeChild(overlay);
+				};
+			});
+		}
+	});
+	</script>
+</body>
+</html>
