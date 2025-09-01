@@ -10,17 +10,18 @@
     <body>
     <canvas id="bg-particles"></canvas>
     <!-- theme toggle will be moved to nav -->
-    <div class="w-100 d-flex align-items-center justify-content-between px-4 py-3" style="background:rgba(0,0,0,0.25);">
+    <div class="w-100 d-flex align-items-center justify-content-between px-4 py-3 position-relative" style="background:rgba(0,0,0,0.25);">
         <span style="font-size:1.5rem; font-weight:700; letter-spacing:2px; color:#19c37d; text-shadow:0 2px 8px #000;">arch000.xyz</span>
-        <nav class="d-flex align-items-center">
+        <nav class="d-flex align-items-center" id="mainnav">
             <a href="/" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Home</a>
             <a href="index.html" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Scripts</a>
             <a href="#" id="contact-nav" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Contact</a>
             <button class="theme-toggle ms-4" id="theme-toggle" title="Toggle dark/light mode" style="position:static; top:auto; left:auto; margin-left:2rem;">🌙</button>
         </nav>
+
     </div>
     <div class="container py-5 d-flex flex-column align-items-center justify-content-center min-vh-100">
-    <h1 class="mb-5 text-center typewriter" id="main-typewriter">Scripts</h1>
+    <h1 class="mb-5 text-center" id="main-typewriter">Scripts</h1>
         <div class="row g-5 w-100 justify-content-center">
             <div class="col-12 col-md-10 col-lg-8 mb-4 reveal">
                 <div class="card download-card p-5 text-center position-relative">
@@ -73,13 +74,7 @@
         });
     });
 
-    // 3. Typewriter effect for main heading (JS fallback for accessibility)
-    window.addEventListener('DOMContentLoaded', function() {
-        var el = document.getElementById('main-typewriter');
-        if (el) {
-            el.classList.add('typewriter');
-        }
-    });
+
 
     // 4. Toast notifications for download clicks
     function showToast(msg) {
@@ -90,12 +85,27 @@
         setTimeout(function() { toast.classList.remove('show'); }, 2600);
     }
 
-    // 5. Dark/Light mode toggle
+    // 5. Dark/Light mode toggle with localStorage persistence
     var themeToggle = document.getElementById('theme-toggle');
+    function setTheme(mode) {
+        if (mode === 'light') {
+            document.body.classList.add('light-mode');
+            if (themeToggle) themeToggle.textContent = '☀️';
+        } else {
+            document.body.classList.remove('light-mode');
+            if (themeToggle) themeToggle.textContent = '🌙';
+        }
+        try { localStorage.setItem('arch_theme', mode); } catch(e) {}
+    }
+    // On load, set theme from storage
+    try {
+        var saved = localStorage.getItem('arch_theme');
+        if (saved === 'light' || saved === 'dark') setTheme(saved);
+    } catch(e) {}
     if (themeToggle) {
         themeToggle.onclick = function() {
-            document.body.classList.toggle('light-mode');
-            themeToggle.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+            var isLight = document.body.classList.toggle('light-mode');
+            setTheme(isLight ? 'light' : 'dark');
         };
     }
 

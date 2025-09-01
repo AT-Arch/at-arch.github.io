@@ -1,3 +1,174 @@
+/* Reverse hamburger bar: hamburger left, site name right/center */
+@media (max-width: 768px) {
+    .w-100.d-flex.align-items-center.justify-content-between.px-4.py-3 {
+        flex-direction: row-reverse !important;
+        justify-content: space-between !important;
+    }
+    .w-100.d-flex.align-items-center.justify-content-between.px-4.py-3 > span {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        width: 100%;
+        display: block;
+    }
+    .hamburger {
+        margin-left: 0 !important;
+        margin-right: 0.5rem !important;
+    }
+}
+
+.light-mode h1,
+.light-mode h2,
+.light-mode h3,
+.light-mode h4,
+.light-mode h5,
+.light-mode h6 {
+    color: #dc3545 !important;
+    text-shadow: 0 2px 8px #fff, 0 1px 0 #fd7e1444;
+}
+/* Improve arch000.xyz site name visibility in light mode */
+.light-mode span[style*="font-size:1.5rem"] {
+    color: #dc3545 !important;
+    text-shadow: 0 2px 8px #fff, 0 1px 0 #19c37d44;
+    background: linear-gradient(90deg, #fff 60%, #ffeaea 100%);
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.7rem;
+    font-weight: 900 !important;
+}
+/* Responsive navigation and layout for mobile accessibility */
+@media (max-width: 768px) {
+    .w-100.d-flex.align-items-center.justify-content-between.px-4.py-3 {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 1rem 0.5rem !important;
+        gap: 0.5rem;
+    }
+    nav.d-flex.align-items-center {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        width: 100%;
+        gap: 0.5rem;
+    }
+    nav a, nav button.theme-toggle {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100%;
+        text-align: left;
+        padding: 0.7rem 0.5rem;
+        font-size: 1.15rem;
+    }
+    .container.py-5.d-flex.flex-column.align-items-center.justify-content-center.min-vh-100 {
+        padding: 1.5rem 0.2rem !important;
+    }
+    .row.g-4.w-100.justify-content-center,
+    .row.g-5.w-100.justify-content-center {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+    .col-12.col-md-6.col-lg-4,
+    .col-12.col-md-10.col-lg-8.mb-4 {
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+        padding: 0 !important;
+    }
+    .download-card {
+        padding: 1.2rem 0.7rem !important;
+        font-size: 1rem !important;
+    }
+    .dev-stamp {
+        top: 10px !important;
+        right: 10px !important;
+        font-size: 0.85rem !important;
+        padding: 0.22rem 0.7rem !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 1.3rem !important;
+    }
+    #custom-cursor {
+        display: none !important;
+    }
+}
+
+/* Increase tap target size for buttons and links */
+nav a, nav button.theme-toggle, .download-link, button, .dev-popup {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Ensure popups are scrollable on small screens */
+@media (max-width: 500px) {
+    .download-card, .card, .dev-stamp {
+        font-size: 0.95rem !important;
+    }
+    .dev-stamp {
+        padding: 0.18rem 0.5rem !important;
+    }
+    .toast {
+        right: 0.5rem;
+        left: 0.5rem;
+        width: auto;
+        font-size: 1rem;
+        padding: 0.7rem 1rem;
+    }
+    .popup, .dev-popup, .contact-popup {
+        min-width: 90vw !important;
+        max-width: 98vw !important;
+        padding: 1.2rem 0.5rem !important;
+        font-size: 1rem !important;
+    }
+}
+/* High contrast navigation for light mode */
+.light-mode .w-100.d-flex.align-items-center.justify-content-between.px-4.py-3 {
+    background: #fff !important;
+    border-bottom: 2px solid #dc3545;
+    box-shadow: 0 2px 12px #0001;
+}
+.light-mode nav a,
+.light-mode nav button.theme-toggle {
+    color: #dc3545 !important;
+    background: none !important;
+    font-weight: 700;
+    text-shadow: 0 1px 0 #fff8;
+}
+.light-mode nav a:hover,
+.light-mode nav button.theme-toggle:hover {
+    color: #fd7e14 !important;
+    background: #f8f9fa !important;
+    border-radius: 0.4rem;
+}
+/* In dark mode, make black text turn white on hover */
+body:not(.light-mode) a,
+body:not(.light-mode) h1,
+body:not(.light-mode) h2,
+body:not(.light-mode) h3,
+body:not(.light-mode) h4,
+body:not(.light-mode) h5,
+body:not(.light-mode) h6,
+body:not(.light-mode) .download-link,
+body:not(.light-mode) p,
+body:not(.light-mode) span,
+body:not(.light-mode) li,
+body:not(.light-mode) div,
+body:not(.light-mode) .card,
+body:not(.light-mode) .dev-stamp {
+    transition: color 0.18s;
+}
+body:not(.light-mode) a:hover,
+body:not(.light-mode) h1:hover,
+body:not(.light-mode) h2:hover,
+body:not(.light-mode) h3:hover,
+body:not(.light-mode) h4:hover,
+body:not(.light-mode) h5:hover,
+body:not(.light-mode) h6:hover,
+body:not(.light-mode) .download-link:hover,
+body:not(.light-mode) p:hover,
+body:not(.light-mode) span:hover,
+body:not(.light-mode) li:hover,
+body:not(.light-mode) div:hover,
+body:not(.light-mode) .card:hover,
+body:not(.light-mode) .dev-stamp:hover {
+    color: #fff !important;
+}
 /* Animated page fade-in */
 body {
     animation: pageFadeIn 1.2s cubic-bezier(.4,0,.2,1);
@@ -22,23 +193,7 @@ body {
     box-shadow: 0 0 0 4px #dc3545cc, 0 8px 32px 0 #dc3545cc, 0 1.5px 8px #0002;
 }
 
-/* Typewriter effect for headings */
-.typewriter {
-    overflow: hidden;
-    border-right: .15em solid #19c37d;
-    white-space: nowrap;
-    margin: 0 auto;
-    letter-spacing: .08em;
-    animation: typing 2.2s steps(30, end), blink-caret .75s step-end infinite;
-}
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-}
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: #19c37d; }
-}
+
 
 /* Toast notification */
 .toast {
@@ -89,10 +244,30 @@ body {
 .light-mode .download-card {
     background: #f8f9fa !important;
     color: #232526 !important;
+    border-color: #dc3545 !important;
+    box-shadow: 0 4px 24px rgba(220,53,69,0.08) !important;
 }
 .light-mode .dev-stamp {
-    background: rgba(220,53,69,0.95) !important;
+    background: #fd7e14 !important;
     color: #fff !important;
+    border-color: #fd7e14 !important;
+}
+.light-mode .download-link,
+.light-mode .dev-stamp,
+.light-mode .card h2,
+.light-mode .card h5,
+.light-mode .card-title,
+.light-mode .card {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+.light-mode span[style*="font-size:1.5rem"] {
+    color: #dc3545 !important;
+    text-shadow: 0 2px 8px #fff, 0 1px 0 #fd7e1444;
+    background: linear-gradient(90deg, #fff 60%, #ffeaea 100%);
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.7rem;
+    font-weight: 900 !important;
 }
 
 /* Animated background particles */
