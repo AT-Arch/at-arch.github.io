@@ -39,8 +39,8 @@ window.ARCH_CONFIG = {
     shuffle: true,
     volume: 0.4,
     playlist: [
-      { title: "Voyage", artist: "Arch", url: "https://cdn.pixabay.com/audio/2023/05/16/audio_e91ac0f0e9.mp3" },
-      { title: "Nebula Drift", artist: "Arch", url: "https://cdn.pixabay.com/audio/2022/10/21/audio_d2af0ee776.mp3" }
+      { title: "Voyage", artist: "Arch", url: "https://cdn.pixabay.com/download/audio/2024/09/29/audio_5c67567261.mp3" },
+      { title: "Nebula Drift", artist: "Arch", url: "https://cdn.pixabay.com/download/audio/2024/09/29/audio_5c67567261.mp3" }
     ]
   },
   footerText: "Arch Loading Screen — github.com/AT-Arch/archloadingscreen",
