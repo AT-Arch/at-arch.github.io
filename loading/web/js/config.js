@@ -13,7 +13,8 @@ window.ARCH_CONFIG = {
     minTotalTimeMs: 14000, // ensures bar isn't instant
     maxTotalTimeMs: 26000,
     stallChance: 0.18, // occasionally pause for realism
-    stallMaxMs: 1800
+  stallMaxMs: 1800,
+  preferReal: true // switch to real callbacks if GMod supplies them
   },
   tips: [
     "Press F1 for server help if enabled by the gamemode.",
