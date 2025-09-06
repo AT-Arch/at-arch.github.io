@@ -13,8 +13,14 @@ window.ARCH_CONFIG = {
     minTotalTimeMs: 14000, // ensures bar isn't instant
     maxTotalTimeMs: 26000,
     stallChance: 0.18, // occasionally pause for realism
-  stallMaxMs: 1800,
-  preferReal: true // switch to real callbacks if GMod supplies them
+    stallMaxMs: 1800,
+    preferReal: true, // switch to real callbacks if GMod supplies them
+    // Minimum percentage floors when certain statuses appear (makes bar feel accurate)
+    statusFloors: {
+      'workshop complete': 0.70,
+      'sending client info': 0.85,
+      'starting lua': 0.92
+    }
   },
   tips: [
     "Press F1 for server help if enabled by the gamemode.",

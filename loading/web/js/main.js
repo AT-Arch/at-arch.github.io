@@ -114,15 +114,26 @@
   }
   function cancelSimulation(){ if(simActive){ simCancelled=true; if(simRaf) cancelAnimationFrame(simRaf);} }
 
-  const real = { total:0, needed:0 };
-  function updateReal(){
-    if(!real.total) return;
+  const real = { total:0, needed:0, floor:0 };
+  function applyProgress(p){
+    const clamped = Math.min(1, Math.max(real.floor, p));
     const bar = $('#progress-bar');
+    bar.style.width = (clamped*100).toFixed(1)+'%';
+    bar.textContent = (clamped*100).toFixed(0)+'%';
+  }
+  function updateReal(){
+    if(!real.total){ applyProgress(real.floor); return; }
     const have = Math.max(0, real.total - real.needed);
-    const pct = Math.min(100, (have/real.total)*100);
-    bar.style.width = pct.toFixed(1)+'%';
-    bar.textContent = pct.toFixed(0)+'%';
+    let pct = have/real.total; // 0..1 of download segment
+    // Reserve upper 15% for late phases unless we reach a status floor.
+    const reservedLate = 0.15; // last 15% for send client info + starting lua + finishing
+    const downloadCap = 1 - reservedLate; // e.g. 0.85
+    const projected = pct * downloadCap; // map download progress into 0..0.85
+    applyProgress(projected);
     $('#eta').textContent = real.needed>0? `${real.needed} files left` : 'Finishing...';
+  }
+  function raiseFloor(target){
+    if(target > real.floor){ real.floor = target; applyProgress(real.floor); }
   }
 
   // GMod callback hooks
@@ -135,9 +146,11 @@
     if(typeof volume === 'number'){ const a=$('#bg-music'); a.volume = volume; }
   };
   window.SetFilesTotal = function(total){ if(!cfg.progress?.preferReal) return; real.total=total; cancelSimulation(); updateReal(); };
-  window.SetFilesNeeded = function(needed){ if(!cfg.progress?.preferReal) return; real.needed=needed; cancelSimulation(); updateReal(); if(needed===0) $('#current-file').textContent='Finishing up...'; };
+  window.SetFilesNeeded = function(needed){ if(!cfg.progress?.preferReal) return; real.needed=needed; cancelSimulation(); updateReal(); if(needed===0){ $('#current-file').textContent='Finishing up...'; raiseFloor(0.90); } };
   window.DownloadingFile = function(file){ if(!cfg.progress?.preferReal) return; cancelSimulation(); $('#current-file').textContent = 'Downloading '+file; };
-  window.SetStatusChanged = function(status){ $('#status-line').textContent = status || ''; };
+  window.SetStatusChanged = function(status){ $('#status-line').textContent = status || ''; if(!status) return; const floors = (cfg.progress && cfg.progress.statusFloors) || {}; const lower = status.toLowerCase(); for(const key in floors){ if(lower.includes(key)){ raiseFloor(floors[key]); } } if(lower.includes('starting lua')){ // push to near-complete but not 100
+      raiseFloor(floors['starting lua'] || 0.92);
+    } if(lower.includes('sending client info')){ raiseFloor(floors['sending client info'] || 0.85); } };
   // compatibility lowercase variant
   window.downloadingFile = window.DownloadingFile;
 
