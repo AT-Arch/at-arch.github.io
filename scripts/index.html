@@ -1,269 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>arch000.xyz - Scripts</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/custom.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>arch000.xyz – Scripts</title>
+    <meta name="description" content="Detailed descriptions of Arch's in‑development Helix, Liro and Garry's Mod scripts." />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/custom.css" rel="stylesheet" />
 </head>
-    <body>
-    <canvas id="bg-particles"></canvas>
-    <!-- theme toggle will be moved to nav -->
-    <div class="w-100 d-flex align-items-center justify-content-between px-4 py-3 position-relative" style="background:rgba(0,0,0,0.25);">
-        <span style="font-size:1.5rem; font-weight:700; letter-spacing:2px; color:#19c37d; text-shadow:0 2px 8px #000;">arch000.xyz</span>
-        <nav class="d-flex align-items-center" id="mainnav">
-            <a href="/" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Home</a>
-            <a href="index.html" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Scripts</a>
-            <a href="#" id="contact-nav" style="color:#19c37d; font-weight:600; margin-left:2rem; text-decoration:none;">Contact</a>
-            <button class="theme-toggle ms-4" id="theme-toggle" title="Toggle dark/light mode" style="position:static; top:auto; left:auto; margin-left:2rem;">🌙</button>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <canvas id="bg-particles" aria-hidden="true"></canvas>
+    <header class="site-header"> 
+        <div class="brand">arch000.xyz</div>
+        <nav class="primary-nav" aria-label="Main navigation">
+            <ul class="nav-list">
+                <li><a href="/">Home</a></li>
+                <li><a href="/scripts/" aria-current="page">Scripts</a></li>
+                <li><button type="button" id="contact-nav" class="link-btn" data-modal="contact">Contact</button></li>
+            </ul>
         </nav>
-
-    </div>
-    <div class="container py-5 d-flex flex-column align-items-center justify-content-center min-vh-100">
-    <h1 class="mb-5 text-center" id="main-typewriter">Scripts</h1>
-        <div class="row g-5 w-100 justify-content-center">
+        <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark or light color scheme">🌙</button>
+    </header>
+    <main id="main" class="container py-5 min-vh-100">
+        <h1 class="mb-5 text-center">Scripts</h1>
+        <div class="row g-5 justify-content-center" id="script-list" data-list="full">
             <div class="col-12 col-md-10 col-lg-8 mb-4 reveal">
-                <div class="card download-card p-5 text-center position-relative">
-                    <div class="dev-stamp">Under Development</div>
-                    <h2 class="mb-3" style="color:#19c37d; font-weight:700;">Helix Perk Cards</h2>
+                <article class="card download-card p-5 text-center position-relative" data-status="dev">
+                    <div class="dev-stamp" aria-label="Work in progress">Under Development</div>
+                    <h2 class="mb-3 h4">Helix Perk Cards</h2>
                     <p class="mb-4">A modular system for Helix that allows you to add, manage, and customize perk cards for your server. Designed for flexibility and easy integration with your existing Helix setup.</p>
-                    <a href="#" class="download-link dev-popup" data-script="Helix Perk Cards">Download Helix Perk Cards</a>
-                </div>
+                    <a href="#" class="download-link dev-popup" data-script="Helix Perk Cards" aria-disabled="true">Download</a>
+                </article>
             </div>
             <div class="col-12 col-md-10 col-lg-8 mb-4 reveal">
-                <div class="card download-card p-5 text-center position-relative">
-                    <div class="dev-stamp">Under Development</div>
-                    <h2 class="mb-3" style="color:#19c37d; font-weight:700;">Arch's Liro Modules</h2>
+                <article class="card download-card p-5 text-center position-relative" data-status="dev">
+                    <div class="dev-stamp" aria-label="Work in progress">Under Development</div>
+                    <h2 class="mb-3 h4">Arch's Liro Modules</h2>
                     <p class="mb-4">A collection of modules for the Liro framework, providing extended functionality, utilities, and integrations for Garry's Mod servers.</p>
-                    <a href="#" class="download-link dev-popup" data-script="Arch's Liro Modules">Download Arch's Liro Modules</a>
-                </div>
+                    <a href="#" class="download-link dev-popup" data-script="Arch's Liro Modules" aria-disabled="true">Download</a>
+                </article>
             </div>
             <div class="col-12 col-md-10 col-lg-8 mb-4 reveal">
-                <div class="card download-card p-5 text-center position-relative">
-                    <div class="dev-stamp">Under Development</div>
-                    <h2 class="mb-3" style="color:#19c37d; font-weight:700;">ArchFramework</h2>
+                <article class="card download-card p-5 text-center position-relative" data-status="dev">
+                    <div class="dev-stamp" aria-label="Work in progress">Under Development</div>
+                    <h2 class="mb-3 h4">ArchFramework</h2>
                     <p class="mb-4">A robust and extensible framework for Garry's Mod, built for rapid development and easy customization of server features and game modes.</p>
-                    <a href="#" class="download-link dev-popup" data-script="ArchFramework">Download ArchFramework</a>
-                </div>
+                    <a href="#" class="download-link dev-popup" data-script="ArchFramework" aria-disabled="true">Download</a>
+                </article>
             </div>
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <div id="custom-cursor"></div>
-    <div id="toast" class="toast"></div>
-    <script>
-    // 1. Animated page transitions (fade in/out) handled by CSS
-
-    // 2. 3D tilt and glow on card hover
-    document.querySelectorAll('.download-card').forEach(function(card) {
-        card.addEventListener('mousemove', function(e) {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * 8;
-            const rotateY = ((x - centerX) / centerX) * -8;
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            card.classList.add('tilted');
-        });
-        card.addEventListener('mouseleave', function() {
-            card.style.transform = '';
-            card.classList.remove('tilted');
-        });
-    });
-
-
-
-    // 4. Toast notifications for download clicks
-    function showToast(msg) {
-        var toast = document.getElementById('toast');
-        if (!toast) return;
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(function() { toast.classList.remove('show'); }, 2600);
-    }
-
-    // 5. Dark/Light mode toggle with localStorage persistence
-    var themeToggle = document.getElementById('theme-toggle');
-    function setTheme(mode) {
-        if (mode === 'light') {
-            document.body.classList.add('light-mode');
-            if (themeToggle) themeToggle.textContent = '☀️';
-        } else {
-            document.body.classList.remove('light-mode');
-            if (themeToggle) themeToggle.textContent = '🌙';
-        }
-        try { localStorage.setItem('arch_theme', mode); } catch(e) {}
-    }
-    // On load, set theme from storage
-    try {
-        var saved = localStorage.getItem('arch_theme');
-        if (saved === 'light' || saved === 'dark') setTheme(saved);
-    } catch(e) {}
-    if (themeToggle) {
-        themeToggle.onclick = function() {
-            var isLight = document.body.classList.toggle('light-mode');
-            setTheme(isLight ? 'light' : 'dark');
-        };
-    }
-
-    // 6. Animated background particles
-    function randomBetween(a, b) { return a + Math.random() * (b - a); }
-    var canvas = document.getElementById('bg-particles');
-    if (canvas) {
-        var ctx = canvas.getContext('2d');
-        var particles = Array.from({length: 38}, () => ({
-            x: randomBetween(0, window.innerWidth),
-            y: randomBetween(0, window.innerHeight),
-            r: randomBetween(1.5, 4.5),
-            dx: randomBetween(-0.5, 0.5),
-            dy: randomBetween(-0.5, 0.5),
-            color: Math.random() > 0.5 ? '#19c37d' : '#dc3545'
-        }));
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        function animateParticles() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            for (let p of particles) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, 2*Math.PI);
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = 0.18;
-                ctx.fill();
-                ctx.globalAlpha = 1;
-                p.x += p.dx; p.y += p.dy;
-                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-            }
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-    }
-
-    // 7. Reveal animations for cards on scroll
-    function revealOnScroll() {
-        var reveals = document.querySelectorAll('.reveal');
-        var windowHeight = window.innerHeight;
-        for (var i = 0; i < reveals.length; i++) {
-            var top = reveals[i].getBoundingClientRect().top;
-            if (top < windowHeight - 60) {
-                reveals[i].classList.add('visible');
-            }
-        }
-    }
-    window.addEventListener('scroll', revealOnScroll);
-    window.addEventListener('DOMContentLoaded', revealOnScroll);
-
-    // 8. Custom cursor with trailing effect
-    var cursor = document.getElementById('custom-cursor');
-    if (cursor) {
-        document.body.style.cursor = 'none';
-        window.addEventListener('mousemove', function(e) {
-            cursor.style.left = (e.clientX - 12) + 'px';
-            cursor.style.top = (e.clientY - 12) + 'px';
-        });
-    }
-
-    // Under Development popup for all download links (with toast)
-    document.querySelectorAll('.dev-popup').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            var scriptName = link.getAttribute('data-script') || 'This script';
-            showToast(scriptName + ' is under development!');
-            // Create overlay
-            var overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = 0;
-            overlay.style.left = 0;
-            overlay.style.width = '100vw';
-            overlay.style.height = '100vh';
-            overlay.style.background = 'rgba(0,0,0,0.6)';
-            overlay.style.display = 'flex';
-            overlay.style.alignItems = 'center';
-            overlay.style.justifyContent = 'center';
-            overlay.style.zIndex = 9999;
-
-            // Create popup
-            var popup = document.createElement('div');
-            popup.style.background = '#232526';
-            popup.style.border = '3px solid #dc3545';
-            popup.style.borderRadius = '1.2rem';
-            popup.style.padding = '2.5rem 2rem 2rem 2rem';
-            popup.style.boxShadow = '0 8px 32px rgba(220,53,69,0.18)';
-            popup.style.color = '#f8f9fa';
-            popup.style.textAlign = 'center';
-            popup.style.maxWidth = '90vw';
-            popup.style.minWidth = '320px';
-            popup.style.position = 'relative';
-
-            popup.innerHTML = `
-                <h3 style="color:#dc3545; font-weight:700;">Under Development</h3>
-                <p style="margin:1rem 0 2rem 0;">${scriptName} is currently under development and not available for download yet.</p>
-                <button id="close-dev-popup" style="margin-top:1.5rem; background:#dc3545; border:none; color:#fff; font-size:1.1rem; font-weight:600; padding:0.6rem 2.2rem; border-radius:0.7rem; cursor:pointer;">Close</button>
-            `;
-
-            overlay.appendChild(popup);
-            document.body.appendChild(overlay);
-
-            document.getElementById('close-dev-popup').onclick = function() {
-                document.body.removeChild(overlay);
-            };
-        });
-    });
-
-    // Contact popout menu for Discord
-    var contactNav = document.getElementById('contact-nav');
-    if (contactNav) {
-        contactNav.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Create overlay
-            var overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = 0;
-            overlay.style.left = 0;
-            overlay.style.width = '100vw';
-            overlay.style.height = '100vh';
-            overlay.style.background = 'rgba(0,0,0,0.6)';
-            overlay.style.display = 'flex';
-            overlay.style.alignItems = 'center';
-            overlay.style.justifyContent = 'center';
-            overlay.style.zIndex = 9999;
-
-            // Create popup
-            var popup = document.createElement('div');
-            popup.style.background = '#232526';
-            popup.style.border = '3px solid #19c37d';
-            popup.style.borderRadius = '1.2rem';
-            popup.style.padding = '2.5rem 2rem 2rem 2rem';
-            popup.style.boxShadow = '0 8px 32px rgba(25,195,125,0.18)';
-            popup.style.color = '#f8f9fa';
-            popup.style.textAlign = 'center';
-            popup.style.maxWidth = '90vw';
-            popup.style.minWidth = '320px';
-            popup.style.position = 'relative';
-
-            popup.innerHTML = `
-                <h3 style="color:#19c37d; font-weight:700;">Contact</h3>
-                <p style="margin:1rem 0 2rem 0;">Add me on Discord:<br><span style="font-size:1.2rem; font-weight:600; color:#19c37d;">arch000</span></p>
-                <a href="https://discord.com/users/arch000" target="_blank" rel="noopener" style="background:#19c37d; color:#232526; font-weight:600; padding:0.7rem 2.2rem; border-radius:0.7rem; text-decoration:none; font-size:1.1rem; box-shadow:0 2px 8px #0002; transition:background 0.15s;">Open Discord</a>
-                <br><button id="close-contact-popup" style="margin-top:1.5rem; background:none; border:none; color:#aaa; font-size:1.1rem; cursor:pointer;">Close</button>
-            `;
-
-            overlay.appendChild(popup);
-            document.body.appendChild(overlay);
-
-            document.getElementById('close-contact-popup').onclick = function() {
-                document.body.removeChild(overlay);
-            };
-        });
-    }
-    </script>
-    <footer class="text-center w-100 py-3" style="color:#aaa; font-size:1rem; background:rgba(0,0,0,0.10); position:fixed; left:0; bottom:0;">&copy; 2025 Arch. All rights reserved.</footer>
+    </main>
+    <footer class="site-footer text-center" role="contentinfo">&copy; 2025 Arch. All rights reserved.</footer>
+    <div id="custom-cursor" aria-hidden="true"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog id="contact-dialog" class="modal-card" aria-labelledby="contact-title">
+        <h2 id="contact-title" class="h4 mb-3">Contact</h2>
+        <p class="mb-3">Discord: <strong>arch000</strong></p>
+        <a class="btn btn-accent w-100 mb-2" href="https://discord.com/users/arch000" target="_blank" rel="noopener">Open Discord</a>
+        <button class="btn btn-outline w-100" data-close>Close</button>
+    </dialog>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="../js/site.js" defer></script>
 </body>
 </html>
