@@ -2,6 +2,7 @@
 (function() {
   const qs = (s, o=document) => o.querySelector(s);
   const qsa = (s, o=document) => [...o.querySelectorAll(s)];
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Theme persistence
   const themeToggle = qs('#theme-toggle');
@@ -41,23 +42,59 @@
   }
   window.showToast = showToast;
 
-  // 3D tilt
-  qsa('.download-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = e.clientX - r.left; const y = e.clientY - r.top;
-      const cx = r.width/2; const cy = r.height/2;
-      const rx = ((y-cy)/cy)*8; const ry = ((x-cx)/cx)*-8;
-      card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-      card.classList.add('tilted');
-    });
-    card.addEventListener('mouseleave', ()=> {
-      card.style.transform='';
-      card.classList.remove('tilted');
-    });
-  });
+  // Inject dynamic script cards
+  async function loadScripts() {
+    const grid = qs('#script-grid, #script-list');
+    if(!grid) return;
+    try {
+      const res = await fetch('/data/scripts.json', {cache:'no-store'});
+      if(!res.ok) throw new Error('Failed to load scripts');
+      const data = await res.json();
+      // Clear existing (keep accessibility if JS disabled)
+      grid.innerHTML = '';
+      data.forEach(item => {
+        const col = document.createElement('div');
+        col.className = grid.id === 'script-grid' ? 'col-12 col-sm-6 col-lg-4 reveal' : 'col-12 col-md-10 col-lg-8 mb-4 reveal';
+        col.innerHTML = `
+          <article class="card download-card p-${grid.id==='script-grid' ? '4':'5'} text-center position-relative" data-status="${item.status}" data-id="${item.id}">
+            <div class="dev-stamp" aria-label="Work in progress">Under Development</div>
+            <h2 class="${grid.id==='script-grid' ? 'h5':'h4'} mb-3">${item.name}</h2>
+            <p class="${grid.id==='script-grid' ? 'small text-secondary mb-3 d-none d-md-block':'mb-4'}">${item.short}</p>
+            <a href="#" class="download-link dev-popup" data-script="${item.name}" aria-disabled="true">Download</a>
+          </article>`;
+        grid.appendChild(col);
+      });
+      // Re-bind interactions for newly added cards
+      initTilt();
+      reveal();
+      bindDevPopups();
+    } catch(e){
+      console.error(e);
+      showToast('Failed to load script list');
+    }
+  }
 
-  // Particles
+  // 3D tilt (extracted for reuse after dynamic load)
+  function initTilt(){
+    qsa('.download-card').forEach(card => {
+      if(card._tiltBound) return; card._tiltBound = true;
+      card.addEventListener('mousemove', e => {
+        if(prefersReduce) return; // Respect reduced motion
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left; const y = e.clientY - r.top;
+        const cx = r.width/2; const cy = r.height/2;
+        const rx = ((y-cy)/cy)*8; const ry = ((x-cx)/cx)*-8;
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        card.classList.add('tilted');
+      });
+      card.addEventListener('mouseleave', ()=> {
+        card.style.transform='';
+        card.classList.remove('tilted');
+      });
+    });
+  }
+
+  // Particle background
   function initParticles() {
     const canvas = qs('#bg-particles');
     if(!canvas) return; const ctx = canvas.getContext('2d');
@@ -115,10 +152,29 @@
   qsa('[data-close]').forEach(btn => btn.addEventListener('click', e => closeDialog(e.target.closest('dialog'))));
   document.addEventListener('keydown', e => { if(e.key==='Escape') qsa('dialog[open]').forEach(closeDialog); });
 
-  // Dev popup -> replaced with toast only to reduce overlays
-  qsa('.dev-popup').forEach(a => a.addEventListener('click', e => {
-    e.preventDefault();
-    const name = a.getAttribute('data-script') || 'This script';
-    showToast(`${name} is under development`);
-  }));
+  // Dev popup toasts
+  function bindDevPopups(){
+    qsa('.dev-popup').forEach(a => {
+      if(a._devBound) return; a._devBound = true;
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const name = a.getAttribute('data-script') || 'This script';
+        showToast(`${name} is under development`);
+      });
+    });
+  }
+
+  // INITIALIZE (replay of original order with modular functions)
+  initTheme();
+  initParticles();
+  initTilt();
+  reveal();
+  bindDevPopups();
+  loadScripts();
+
+  // Listeners
+  addEventListener('scroll', reveal, {passive:true});
+  addEventListener('DOMContentLoaded', reveal);
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => { /* could adjust animations */ });
+
 })();

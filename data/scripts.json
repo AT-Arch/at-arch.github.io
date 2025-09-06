@@ -1,0 +1,29 @@
+[
+  {
+    "id": "helix-perk-cards",
+    "name": "Helix Perk Cards",
+    "status": "development",
+    "short": "Modular perk card system for Helix (flexible + customizable).",
+    "description": "A modular system for Helix that allows you to add, manage, and customize perk cards for your server. Designed for flexibility and easy integration with your existing Helix setup.",
+    "tags": ["helix", "perk", "modular"],
+    "plannedVersion": "0.1.0"
+  },
+  {
+    "id": "liro-modules",
+    "name": "Arch's Liro Modules",
+    "status": "development",
+    "short": "Extended utility modules for the Liro framework.",
+    "description": "A collection of modules for the Liro framework, providing extended functionality, utilities, and integrations for Garry's Mod servers.",
+    "tags": ["liro", "modules"],
+    "plannedVersion": "0.1.0"
+  },
+  {
+    "id": "archframework",
+    "name": "ArchFramework",
+    "status": "development",
+    "short": "Extensible framework foundation for rapid GMod dev.",
+    "description": "A robust and extensible framework for Garry's Mod, built for rapid development and easy customization of server features and game modes.",
+    "tags": ["framework", "gmod"],
+    "plannedVersion": "0.1.0"
+  }
+]
