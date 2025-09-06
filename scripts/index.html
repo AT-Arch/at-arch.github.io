@@ -6,7 +6,9 @@
     <title>arch000.xyz – Scripts</title>
     <meta name="description" content="Detailed descriptions of Arch's in‑development Helix, Liro and Garry's Mod scripts." />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../css/custom.css" rel="stylesheet" />
+    <link rel="preload" href="../css/custom.min.css" as="style" />
+    <link href="../css/custom.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='../css/custom.css'" />
+    <noscript><link href="../css/custom.css" rel="stylesheet" /></noscript>
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -87,6 +89,6 @@
         <button class="btn btn-outline w-100" data-close>Close</button>
     </dialog>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
-    <script src="../js/site.js" defer></script>
+    <script>(function(){var s=document.createElement('script');s.src='../js/site.min.js';s.defer=true;s.onerror=function(){var f=document.createElement('script');f.src='../js/site.js';f.defer=true;document.head.appendChild(f);};document.head.appendChild(s);})();</script>
 </body>
 </html>

@@ -8,13 +8,18 @@
     "build:css": "node build/minify-css.js",
     "build:js": "node build/minify-js.js",
     "build": "npm run build:css && npm run build:js",
-    "purge": "node build/purge-css.js"
+    "purge:naive": "node build/purge-css.js",
+    "purge:css": "node build/purgecss.js",
+    "build:html": "node build/minify-html.js",
+    "build:dist": "node build/generate-dist.js",
+    "build:prod": "npm run build && npm run purge:css && npm run build:dist"
   },
   "devDependencies": {
     "csso": "^5.0.5",
     "glob": "^10.3.10",
     "html-minifier-terser": "^7.2.0",
     "lite-server": "^2.6.1",
+    "purgecss": "^5.0.0",
     "terser": "^5.31.0"
   }
 }
