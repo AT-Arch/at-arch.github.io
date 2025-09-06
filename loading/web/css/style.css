@@ -1,0 +1,33 @@
+:root{
+  --bg1: #0f172a;
+  --bg2: #0b3a53;
+  --accent: #7dd3fc;
+  --accent-2: #60a5fa;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#app{height:100%}
+body{
+  font-family:Inter,Segoe UI,Roboto,system-ui,Arial,sans-serif;
+  background: linear-gradient(120deg,var(--bg1),var(--bg2));
+  color:#e6eef8;
+  overflow:hidden;
+}
+header.top{display:flex;align-items:center;padding:24px 36px;gap:16px}
+#logo{width:72px;height:72px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.6))}
+.server-info h1{font-size:22px;margin-bottom:4px}
+.server-info p{font-size:13px;opacity:.85}
+main{position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
+.loading-panel{width:720px;max-width:92%;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));border-radius:12px;padding:22px;backdrop-filter: blur(6px);box-shadow:0 10px 30px rgba(2,6,23,.6), inset 0 1px 0 rgba(255,255,255,.02)}
+.progress-wrap{width:100%;height:18px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden}
+.progress{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px rgba(96,165,250,.16);transition:width 400ms cubic-bezier(.2,.9,.2,1)}
+.progress-meta{display:flex;justify-content:space-between;margin-top:10px;font-size:13px}
+.tips{margin-top:14px;font-size:14px;color:rgba(230,238,248,.9)}
+#bgcanvas{position:absolute;inset:0;z-index:-1}
+footer{position:fixed;right:14px;bottom:12px;font-size:12px;opacity:.7}
+
+/* responsive tweaks */
+@media (max-width:520px){
+  header.top{padding:12px}
+  #logo{width:54px;height:54px}
+  .loading-panel{padding:16px}
+}

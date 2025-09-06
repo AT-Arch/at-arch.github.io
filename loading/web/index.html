@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Loading — Arch Server</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="top">
+      <img id="logo" src="assets/logo.svg" alt="logo">
+      <div class="server-info">
+        <h1 id="server-name">Arch Server</h1>
+        <p id="server-desc">Welcome to our Garry's Mod server</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="loading-panel">
+        <div class="progress-wrap">
+          <div id="progress" class="progress"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="percent">0%</span>
+          <span id="status">Initializing...</span>
+        </div>
+        <div class="tips">
+          <strong>Tip:</strong> <span id="tip">Join our Discord for events!</span>
+        </div>
+      </div>
+      <canvas id="bgcanvas"></canvas>
+    </main>
+
+    <footer>
+      <div class="credits">archloadingscreen • configurable</div>
+    </footer>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
