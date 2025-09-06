@@ -1,33 +1,71 @@
-:root{
-  --bg1: #0f172a;
-  --bg2: #0b3a53;
-  --accent: #7dd3fc;
-  --accent-2: #60a5fa;
+/* Core theme overrides */
+:root {
+  --arch-primary: var(--bs-primary);
+  --arch-accent: #0dcaf0;
+  --arch-bg: #0f1115;
+  --arch-bg-soft: #161a20;
+  --arch-gradient: radial-gradient(circle at 30% 20%, #1e2635, #0f1115 70%);
+  --arch-radius: .85rem;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html,body,#app{height:100%}
-body{
-  font-family:Inter,Segoe UI,Roboto,system-ui,Arial,sans-serif;
-  background: linear-gradient(120deg,var(--bg1),var(--bg2));
-  color:#e6eef8;
-  overflow:hidden;
-}
-header.top{display:flex;align-items:center;padding:24px 36px;gap:16px}
-#logo{width:72px;height:72px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.6))}
-.server-info h1{font-size:22px;margin-bottom:4px}
-.server-info p{font-size:13px;opacity:.85}
-main{position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
-.loading-panel{width:720px;max-width:92%;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));border-radius:12px;padding:22px;backdrop-filter: blur(6px);box-shadow:0 10px 30px rgba(2,6,23,.6), inset 0 1px 0 rgba(255,255,255,.02)}
-.progress-wrap{width:100%;height:18px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden}
-.progress{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px rgba(96,165,250,.16);transition:width 400ms cubic-bezier(.2,.9,.2,1)}
-.progress-meta{display:flex;justify-content:space-between;margin-top:10px;font-size:13px}
-.tips{margin-top:14px;font-size:14px;color:rgba(230,238,248,.9)}
-#bgcanvas{position:absolute;inset:0;z-index:-1}
-footer{position:fixed;right:14px;bottom:12px;font-size:12px;opacity:.7}
 
-/* responsive tweaks */
-@media (max-width:520px){
-  header.top{padding:12px}
-  #logo{width:54px;height:54px}
-  .loading-panel{padding:16px}
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--arch-gradient), var(--arch-bg);
+  background-attachment: fixed;
+  color: #e3e7ef;
+  overflow-x: hidden;
 }
+
+#bg-layer::before, #bg-layer::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(60deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 6px);
+  mix-blend-mode: overlay;
+  animation: pan 25s linear infinite;
+}
+
+#bg-layer::after {
+  background: radial-gradient(circle at 70% 80%, rgba(0,153,255,0.08), transparent 60%), radial-gradient(circle at 10% 10%, rgba(146,51,255,0.07), transparent 55%);
+  mix-blend-mode: screen;
+  animation: pulse 12s ease-in-out infinite;
+}
+
+@keyframes pan { from { transform: translateX(0); } to { transform: translateX(-200px); } }
+@keyframes pulse { 0%,100% { opacity: .7; } 50% { opacity: .35; } }
+
+.logo { height: 48px; width: 48px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.5)); }
+
+.card { background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); backdrop-filter: blur(12px) saturate(140%); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--arch-radius);
+  box-shadow: 0 4px 18px -4px rgba(0,0,0,.5), 0 2px 4px -1px rgba(0,0,0,.4);
+}
+
+.card-header { background: rgba(255,255,255,0.04); font-weight: 500; }
+
+.progress { background: rgba(255,255,255,0.08); }
+.progress-bar { background-image: linear-gradient(90deg,var(--bs-primary),var(--arch-accent)); box-shadow: 0 0 0 1px rgba(0,0,0,.4), 0 0 18px -2px var(--arch-accent); }
+
+.tip-text { min-height: 4.25rem; font-size: .95rem; line-height: 1.35rem; animation: fadeIn .4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
+
+#rules-list li { background: transparent; border-color: rgba(255,255,255,0.08); }
+
+footer { opacity: .65; transition: opacity .3s; }
+footer:hover { opacity: 1; }
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  header { flex-wrap: wrap; }
+  #info-chips { width: 100%; justify-content: flex-start; }
+  .logo { height: 40px; width: 40px; }
+}
+
+/* Mute button active state */
+#toggle-mute.muted { opacity: .5; }
+
+/* Scrollbar styling (WebKit) */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.35); }

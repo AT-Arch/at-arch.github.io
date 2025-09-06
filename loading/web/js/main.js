@@ -1,92 +1,151 @@
-(() => {
-  const C = window.ARCH_CONFIG || {};
-  // Apply config values to DOM
-  document.getElementById('server-name').textContent = C.serverName || 'Server';
-  document.getElementById('server-desc').textContent = C.serverDesc || '';
-  document.getElementById('logo').src = C.logo || 'assets/logo.svg';
-  const tipEl = document.getElementById('tip');
-  const percentEl = document.getElementById('percent');
-  const statusEl = document.getElementById('status');
-  const progressEl = document.getElementById('progress');
+// Main runtime for Arch Loading Screen
+(function(){
+  const cfg = window.ARCH_CONFIG || {};
 
-  // Setup tips
-  const tips = (C.tips && C.tips.length) ? C.tips : ['Welcome!'];
-  let tipIdx = 0;
-  function rotateTip(){ tipEl.textContent = tips[tipIdx % tips.length]; tipIdx++; }
-  rotateTip(); setInterval(rotateTip, 6000);
+  /* Utility helpers */
+  const $ = s => document.querySelector(s);
+  const rand = (min,max)=>Math.random()*(max-min)+min;
+  const qs = Object.fromEntries(new URLSearchParams(location.search).entries());
 
-  // Particle background
-  const canvas = document.getElementById('bgcanvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
-  addEventListener('resize', resize); resize();
-
-  function makeParticles(){
-    particles = [];
-    const count = (C.particles && C.particles.count) || 40;
-    for(let i=0;i<count;i++){
-      particles.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        r: 1 + Math.random()*3,
-        vx: (Math.random()-0.5)*0.25,
-        vy: (Math.random()-0.5)*0.25,
-        alpha: 0.2 + Math.random()*0.9
-      });
+  function applyBranding(){
+    if(cfg.favicon){
+      const link = document.createElement('link');
+      link.rel='icon'; link.href=cfg.favicon; document.head.appendChild(link);
+    }
+    if(cfg.primaryColor){
+      document.documentElement.style.setProperty('--bs-primary', cfg.primaryColor);
+      document.documentElement.style.setProperty('--arch-primary', cfg.primaryColor);
+    }
+    if(cfg.accentColor){
+      document.documentElement.style.setProperty('--arch-accent', cfg.accentColor);
+    }
+    if(cfg.background?.image){
+      document.body.style.backgroundImage = `url(${cfg.background.image})`;
+      document.body.style.backgroundSize='cover';
+      document.body.style.backgroundPosition='center';
+      if(cfg.background.overlay){
+        const o = document.createElement('div');
+        o.style.position='fixed';o.style.inset='0';o.style.background=cfg.background.overlay;o.style.zIndex='-1';
+        document.body.appendChild(o);
+      }
     }
   }
-  makeParticles();
 
-  function step(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    // animated gradient overlay
-    const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-    g.addColorStop(0, (C.colors && C.colors.accent) || '#7dd3fc');
-    g.addColorStop(1, (C.colors && C.colors.accent2) || '#60a5fa');
-    ctx.fillStyle = g;
-    ctx.globalAlpha = 0.02;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.globalAlpha = 1;
+  function setServerInfo(){
+    const serverName = (cfg.showHostnameFromQuery && qs.hostname) ? qs.hostname : cfg.serverName;
+    $('#server-name').textContent = serverName || 'Server';
+    $('#server-subtitle').textContent = cfg.subtitle || 'Loading environment';
+    $('#doc-title').textContent = `${serverName} • Loading...`;
+    if(cfg.logo) $('#logo').src = cfg.logo;
+    $('#map-name').textContent = qs.mapname ? `map: ${qs.mapname}` : 'map: unknown';
+    $('#gamemode').textContent = qs.gamemode ? `mode: ${qs.gamemode}` : 'mode: ?';
+    $('#player-steamid').textContent = qs.steamid ? `steam: ${qs.steamid}` : 'steam: ?';
+    $('#footer-text').textContent = cfg.footerText || '';
+  }
 
-    for(const p of particles){
-      p.x += p.vx; p.y += p.vy;
-      if(p.x< -10) p.x = canvas.width+10; if(p.x>canvas.width+10) p.x = -10;
-      if(p.y< -10) p.y = canvas.height+10; if(p.y>canvas.height+10) p.y = -10;
-      ctx.beginPath();
-      ctx.fillStyle = (C.particles && C.particles.color) || 'rgba(125,211,252,0.9)';
-      ctx.globalAlpha = p.alpha * 0.9;
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fill();
+  /* Tips rotation */
+  let tipIndex = 0; let tipTimer;
+  function showTip(i){
+    if(!cfg.tips?.length) { $('#tip-text').textContent=''; return; }
+    const tip = cfg.tips[i % cfg.tips.length];
+    $('#tip-text').textContent = tip;
+    $('#tip-counter').textContent = `${(i%cfg.tips.length)+1}/${cfg.tips.length}`;
+  }
+  function startTips(){
+    showTip(tipIndex);
+    clearInterval(tipTimer);
+    tipTimer = setInterval(()=>{ tipIndex++; showTip(tipIndex); }, cfg.tipIntervalMs || 6000);
+  }
+
+  /* Rules list */
+  function populateRules(){
+    const ul = $('#rules-list');
+    ul.innerHTML='';
+    (cfg.rules||[]).forEach(r=>{
+      const li=document.createElement('li');
+      li.className='list-group-item';
+      li.textContent = r; ul.appendChild(li);
+    });
+  }
+
+  /* Simulated progress (since GMod doesn't feed exact values to HTML) */
+  function simulateProgress(){
+    const bar = $('#progress-bar');
+    const etaEl = $('#eta');
+    const statusLine = $('#status-line');
+    const fileEl = $('#current-file');
+    const total = rand(cfg.progress.minTotalTimeMs, cfg.progress.maxTotalTimeMs);
+    const start = performance.now();
+    const sampleFiles = ['maps/'+(qs.mapname||'world')+'.bsp','materials/shared/pack1.vmt','models/player.mdl','sound/ui/menu.wav','lua/autorun/server/init.lua'];
+    let nextFileChange = 0; let currentFile = sampleFiles[0];
+    function step(now){
+      const elapsed = now-start;
+      let t = Math.min(elapsed/total, 1);
+      // ease
+      const eased = 1 - Math.pow(1-t, 2.2);
+      // occasional stall
+      if(Math.random()<cfg.progress.stallChance && t<0.92){
+        const stallMs = rand(150, cfg.progress.stallMaxMs);
+        nextFileChange = now + stallMs;
+        cfg.progress.stallChance *= 0.92; // reduce repeats
+      }
+      if(now < nextFileChange){
+        requestAnimationFrame(step); return;
+      }
+      bar.style.width = (eased*100).toFixed(1)+'%';
+      bar.textContent = (eased*100).toFixed(0)+'%';
+      const remainingMs = Math.max(0,total-elapsed);
+      etaEl.textContent = (remainingMs/1000).toFixed(1)+'s remaining';
+      if(elapsed > (sampleFiles.indexOf(currentFile)+1)* (total/sampleFiles.length) && sampleFiles.length>1){
+        sampleFiles.push(sampleFiles.shift()); // rotate
+        currentFile = sampleFiles[0];
+        fileEl.textContent = 'Downloading '+currentFile;
+      }
+      if(t>=1){
+        fileEl.textContent='Finishing up...';
+        statusLine.textContent='Almost there';
+        setTimeout(()=>statusLine.textContent='Ready — waiting for game to finish mounting resources', 1200);
+        return;
+      }
+      requestAnimationFrame(step);
     }
+    fileEl.textContent = 'Preparing downloads...';
     requestAnimationFrame(step);
   }
-  requestAnimationFrame(step);
 
-  // Progress simulation
-  const totalMs = C.simulatedLoadTime || 4000;
-  let start = performance.now();
-  function updateProgress(now){
-    const t = Math.min(1,(now-start)/totalMs);
-    // ease out
-    const eased = 1 - Math.pow(1-t,3);
-    const pct = Math.round(eased*100);
-    progressEl.style.width = pct + '%';
-    percentEl.textContent = pct + '%';
-    if(pct < 100){
-      statusEl.textContent = ['Downloading content','Preparing resources','Loading modules','Almost there...'][Math.floor(t*4)] || 'Loading...';
-      requestAnimationFrame(updateProgress);
-    } else {
-      statusEl.textContent = 'Ready — joining soon';
-      // Optionally redirect or close if desired
+  /* Music */
+  function initMusic(){
+    if(!cfg.music?.enabled) return;
+    const card = $('#music-card'); card.style.display='block';
+    const audio = $('#bg-music');
+    let list = [...(cfg.music.playlist||[])];
+    if(!list.length){ card.style.display='none'; return; }
+    if(cfg.music.shuffle) list = list.sort(()=>Math.random()-0.5);
+    let trackIndex = 0;
+    function play(index){
+      const track = list[index % list.length];
+      audio.src = track.url; audio.volume = cfg.music.volume ?? 0.5; audio.play().catch(()=>{});
+      $('#track-title').textContent = track.title||'Track';
+      $('#track-artist').textContent = track.artist||'';
     }
+    audio.addEventListener('ended',()=>{ trackIndex++; play(trackIndex); });
+    audio.addEventListener('timeupdate',()=>{
+      if(audio.duration){
+        $('#music-progress').style.width = (audio.currentTime/audio.duration*100)+'%';
+      }
+    });
+    $('#toggle-mute').addEventListener('click',()=>{
+      audio.muted = !audio.muted; $('#toggle-mute').classList.toggle('muted', audio.muted);
+    });
+    if(cfg.music.autoplay){ play(trackIndex); }
   }
-  requestAnimationFrame(updateProgress);
 
-  // Expose a simple API for external integration (GMod) to set percent
-  window.ArchLoading = {
-    setPercent(p){ const n = Math.max(0,Math.min(100,Math.round(p))); progressEl.style.width = n+'%'; percentEl.textContent = n+'%'; },
-    setStatus(s){ statusEl.textContent = String(s); },
-    finish(){ progressEl.style.width = '100%'; percentEl.textContent = '100%'; statusEl.textContent = 'Ready'; }
-  };
+  // Initialize
+  applyBranding();
+  setServerInfo();
+  startTips();
+  populateRules();
+  if(cfg.progress?.simulated) simulateProgress();
+  initMusic();
+
 })();

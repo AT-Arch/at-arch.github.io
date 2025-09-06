@@ -1,25 +1,52 @@
-/*
-  Configuration for Arch Loading Screen
-  Edit these values to customize the loading screen without touching the main code.
-*/
+// Arch Loading Screen configuration
+// Adjust these values; no build step required.
 window.ARCH_CONFIG = {
-  serverName: 'Arch Garry\'s Mod',
-  serverDesc: 'Welcome — be sure to read the rules in chat',
-  logo: 'assets/logo.svg',
+  serverName: "Arch Sandbox Network",
+  subtitle: "Preparing your session...",
+  favicon: "assets/logo.svg",
+  logo: "assets/logo.svg",
+  primaryColor: "#6366f1",
+  accentColor: "#06b6d4",
+  showHostnameFromQuery: true, // if false use serverName always
+  progress: {
+    simulated: true,
+    minTotalTimeMs: 14000, // ensures bar isn't instant
+    maxTotalTimeMs: 26000,
+    stallChance: 0.18, // occasionally pause for realism
+    stallMaxMs: 1800
+  },
   tips: [
-    'Join our Discord to participate in events.',
-    'Use !help in chat to see available commands.',
-    'Press F1 to open the help menu.',
-    'Report bugs on the forum so we can fix them quickly.'
+    "Press F1 for server help if enabled by the gamemode.",
+    "Be respectful; admins can see logs.",
+    "Bind useful keys via the console: bind g \'+menu\' ",
+    "Need better FPS? Try lowering your shadows in video settings.",
+    "Some addons download on first join only; subsequent joins are faster.",
+    "Use voice chat responsibly to avoid mutes.",
+    "Report bugs on our Discord server (link in MOTD)."
   ],
-  colors: {
-    accent: '#7dd3fc',
-    accent2: '#60a5fa'
+  tipIntervalMs: 5000,
+  rules: [
+    "No exploiting or cheating.",
+    "No targeted harassment or hate speech.",
+    "Keep mic spam & loud sounds to a minimum.",
+    "Follow staff directions.",
+    "English only in main chat unless otherwise allowed." 
+  ],
+  music: {
+    enabled: true,
+    autoplay: true,
+    shuffle: true,
+    volume: 0.4,
+    playlist: [
+      { title: "Voyage", artist: "Arch", url: "https://cdn.pixabay.com/audio/2023/05/16/audio_e91ac0f0e9.mp3" },
+      { title: "Nebula Drift", artist: "Arch", url: "https://cdn.pixabay.com/audio/2022/10/21/audio_d2af0ee776.mp3" }
+    ]
   },
-  particles: {
-    count: 48,
-    color: 'rgba(125,211,252,0.9)'
-  },
-  // Simulated load duration in ms (for demo). Set to null to rely on GMod messages if integrated.
-  simulatedLoadTime: 6200
+  footerText: "Arch Loading Screen — github.com/AT-Arch/archloadingscreen",
+  background: {
+    // Provide image (jpg/png/webp) or leave null for gradient
+    image: null,
+    // Optional overlay color
+    overlay: "rgba(15,17,21,0.55)"
+  }
 };
