@@ -337,6 +337,28 @@ body {
     animation: gradientBG 16s ease-in-out infinite;
 }
 
+/* Theme tokens */
+:root {
+    --color-bg: #232526;
+    --color-bg-alt: #2c2f34;
+    --color-accent: #19c37d;
+    --color-accent-rgb: 25,195,125;
+    --color-accent-alt: #16a06a;
+    --color-danger: #dc3545;
+    --color-text: #f8f9fa;
+    --color-surface: #f8f9fa;
+    --color-border: #19c37d;
+    --shadow-accent: 0 4px 24px rgba(var(--color-accent-rgb),0.08);
+}
+
+.light-mode:root, .light-mode {
+    --color-bg: #ffffff;
+    --color-bg-alt: #f8f9fa;
+    --color-text: #232526;
+    --color-surface: #ffffff;
+    --color-border: #dc3545;
+}
+
 /* Accessibility helpers */
 .skip-link {
         position: absolute;
@@ -374,6 +396,11 @@ body {
 .btn-accent { --btn-bg:#19c37d; --btn-fg:#232526; }
 .btn-outline { --btn-bg:transparent; --btn-fg:#f8f9fa; }
 .btn-outline:hover { background:#19c37d22; }
+.btn-sm { padding:.45rem .9rem; font-size:.8rem; }
+
+/* Filters */
+#filters { background:rgba(255,255,255,0.03); border:1px solid #ffffff12; padding:1rem 1.2rem; border-radius:0.9rem; backdrop-filter:blur(3px); }
+.light-mode #filters { background:#ffffff; border-color:#dc35451a; }
 
 /* Dialog */
 dialog.modal-card { border:none; border-radius:1rem; padding:2rem 2rem 1.5rem; max-width:420px; width:clamp(300px,90vw,420px); background:#232526; color:#f8f9fa; box-shadow:0 8px 40px -4px #000c, 0 0 0 1px #ffffff10; }

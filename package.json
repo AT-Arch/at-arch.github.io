@@ -1,0 +1,20 @@
+{
+  "name": "arch000-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "lite-server",
+    "build:css": "node build/minify-css.js",
+    "build:js": "node build/minify-js.js",
+    "build": "npm run build:css && npm run build:js",
+    "purge": "node build/purge-css.js"
+  },
+  "devDependencies": {
+    "csso": "^5.0.5",
+    "glob": "^10.3.10",
+    "html-minifier-terser": "^7.2.0",
+    "lite-server": "^2.6.1",
+    "terser": "^5.31.0"
+  }
+}

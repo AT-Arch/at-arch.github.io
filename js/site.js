@@ -3,6 +3,7 @@
   const qs = (s, o=document) => o.querySelector(s);
   const qsa = (s, o=document) => [...o.querySelectorAll(s)];
   const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let scriptsData = [];
 
   // Theme persistence
   const themeToggle = qs('#theme-toggle');
@@ -42,6 +43,43 @@
   }
   window.showToast = showToast;
 
+  // Filtering
+  function applyFilters(){
+    const term = (qs('#search')?.value || '').toLowerCase().trim();
+    const tag = qs('#tag-select')?.value || '';
+    const status = qs('#status-select')?.value || '';
+    const grid = qs('#script-grid, #script-list');
+    if(!grid) return;
+    qsa('[data-id]', grid).forEach(cardWrap => {
+      const art = cardWrap.querySelector('article');
+      if(!art) return;
+      const id = art.getAttribute('data-id');
+      const item = scriptsData.find(d=>d.id===id);
+      if(!item){ cardWrap.hidden=false; return; }
+      let visible = true;
+      if(term) visible = item.name.toLowerCase().includes(term) || item.tags?.some(t=>t.toLowerCase().includes(term));
+      if(visible && tag) visible = item.tags?.includes(tag);
+      if(visible && status) visible = item.status === status;
+      cardWrap.hidden = !visible;
+    });
+  }
+  function bindFilterEvents(){
+    const form = qs('#filter-form');
+    if(!form || form._bound) return; form._bound=true;
+    form.addEventListener('input', applyFilters);
+    form.addEventListener('reset', () => setTimeout(()=>{ form.querySelectorAll('input,select').forEach(el=> el.value=''); applyFilters(); },0));
+  }
+
+  function populateTags(){
+    const select = qs('#tag-select'); if(!select) return;
+    const tags = new Set(); scriptsData.forEach(s => (s.tags||[]).forEach(t=> tags.add(t)) );
+    [...tags].sort().forEach(t=> {
+      if(!select.querySelector(`[value="${t}"]`)){
+        const opt = document.createElement('option'); opt.value = t; opt.textContent = t; select.appendChild(opt);
+      }
+    });
+  }
+
   // Inject dynamic script cards
   async function loadScripts() {
     const grid = qs('#script-grid, #script-list');
@@ -49,18 +87,20 @@
     try {
       const res = await fetch('/data/scripts.json', {cache:'no-store'});
       if(!res.ok) throw new Error('Failed to load scripts');
-      const data = await res.json();
+      scriptsData = await res.json();
       // Clear existing (keep accessibility if JS disabled)
       grid.innerHTML = '';
-      data.forEach(item => {
+      scriptsData.forEach(item => {
         const col = document.createElement('div');
         col.className = grid.id === 'script-grid' ? 'col-12 col-sm-6 col-lg-4 reveal' : 'col-12 col-md-10 col-lg-8 mb-4 reveal';
+        const detailHref = `/scripts/${item.id}/`;
         col.innerHTML = `
           <article class="card download-card p-${grid.id==='script-grid' ? '4':'5'} text-center position-relative" data-status="${item.status}" data-id="${item.id}">
-            <div class="dev-stamp" aria-label="Work in progress">Under Development</div>
-            <h2 class="${grid.id==='script-grid' ? 'h5':'h4'} mb-3">${item.name}</h2>
+            <div class="dev-stamp" aria-label="Work in progress">${item.status === 'released' ? 'Released' : 'Under Development'}</div>
+            <h2 class="${grid.id==='script-grid' ? 'h5':'h4'} mb-3"><a href="${detailHref}" class="stretched-link" style="text-decoration:none;color:inherit;">${item.name}</a></h2>
             <p class="${grid.id==='script-grid' ? 'small text-secondary mb-3 d-none d-md-block':'mb-4'}">${item.short}</p>
-            <a href="#" class="download-link dev-popup" data-script="${item.name}" aria-disabled="true">Download</a>
+            <div class="d-flex flex-wrap justify-content-center gap-1 mb-3">${(item.tags||[]).map(t=>`<span class='badge bg-secondary'>${t}</span>`).join('')}</div>
+            <a href="#" class="download-link ${item.status !== 'released' ? 'dev-popup':''}" data-script="${item.name}" aria-disabled="${item.status !== 'released'}">${item.status==='released' ? 'Download' : 'Download'}</a>
           </article>`;
         grid.appendChild(col);
       });
@@ -68,6 +108,9 @@
       initTilt();
       reveal();
       bindDevPopups();
+      populateTags();
+      bindFilterEvents();
+      applyFilters();
     } catch(e){
       console.error(e);
       showToast('Failed to load script list');
@@ -164,6 +207,35 @@
     });
   }
 
+  // Service Worker
+  function registerSW(){
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('/sw.js').catch(err=>console.warn('SW fail', err));
+    }
+  }
+
+  // Detail page enhancement (status + planned version)
+  async function enhanceDetail(){
+    const hostArticle = qs('article[data-script-id]');
+    if(!hostArticle) return;
+    const id = hostArticle.getAttribute('data-script-id');
+    try {
+      if(!scriptsData.length){
+        const res = await fetch('/data/scripts.json');
+        scriptsData = await res.json();
+      }
+      const item = scriptsData.find(s=>s.id===id);
+      if(!item) return;
+      const statusWrap = qs('#script-status');
+      if(statusWrap){
+        const badgeColor = item.status === 'released' ? 'success' : (item.status === 'beta' ? 'warning' : 'danger');
+        statusWrap.innerHTML = `<span class="badge bg-${badgeColor} text-uppercase fw-semibold me-2">${item.status}</span>` + (item.plannedVersion ? `<span class="badge bg-dark">v${item.plannedVersion}</span>` : '');
+      }
+    } catch(err){
+      console.warn('Detail enhancement failed', err);
+    }
+  }
+
   // INITIALIZE (replay of original order with modular functions)
   initTheme();
   initParticles();
@@ -171,6 +243,9 @@
   reveal();
   bindDevPopups();
   loadScripts();
+  bindFilterEvents();
+  registerSW();
+  enhanceDetail();
 
   // Listeners
   addEventListener('scroll', reveal, {passive:true});
